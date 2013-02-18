@@ -6,7 +6,9 @@ jQuery best used with modernizr for full browser support (why use a plugin when 
 
 ##Usage
 Simply attach the .sickholder() function to a jQuery select. EG:
+    
     $('input').sickholder();
+
 You can also alter the included css files to change the look and feel of the text as well as the 'focus' styling.
 
 ##The Future
