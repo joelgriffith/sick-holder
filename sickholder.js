@@ -1,50 +1,84 @@
-;(function(){
-	$.fn.sickHolder = function(){
+// Load/Check app global space
+window.app = window.app || {};
 
-		// Global functions && variables
-		var getPlaceholder = function(elem){
-			return elem.attr('placeholder');
+app.SickHolder = (function(){
+
+	// Some 'global' functions & variables
+	var inputs, className = 'sick-holder';
+
+	// Application Object
+	var SickHolder = {
+
+		/*
+		 *	Instantiater, handles function calling and config
+		 *
+		 */
+		init: function(config){
+			config = config || {};
+			inputs = this.getElements();
+			this.focusHandler(inputs);
+			this.createPlaceHolder(inputs);
+		},
+
+		/*
+		 * Captures all inputs/textareas by attribute
+		 * @return: Array of elements with placeholder attributes
+		 */
+		getElements: function(){
+			var matchingElements = [];
+		  	var allElements = document.getElementsByTagName('*');
+		  	for (var i = 0; i < allElements.length; i++){
+		    	if (allElements[i].getAttribute('placeholder')){
+		      		matchingElements.push(allElements[i]);
+		    	}
+		  }
+		  return matchingElements;
+		},
+
+		/*
+		 * Creates labels that will act as placeholder shim
+		 * @param: Array of elements needing placeholder text
+		 */
+		createPlaceHolder: function(elems){
+			for(var i= 0; i < elems.length; i++){
+				var placeholderText = elems[i].getAttribute('placeholder');
+				var location = this.getElementPosition(elems[i]);
+				var label = document.createElement('label');
+				label.innerHTML = placeholderText;
+				this.insertAfter(elems[i], label);
+			}
+		},
+
+		/*
+		 * Handles the focus interaction
+		 * @param: Array of elements needing focus 
+		 *
+		 */
+		focusHandler: function(elems){
+			for(var i = 0; i < elems.length; i++){
+				elems[i].addEventListener("focus", function(e) {
+			    }, false);
+			}
+		},
+
+		/*
+		 * Method to get element position
+		 * @return: Object with element coordination
+		 */
+		getElementPosition: function(element){
+			var position = {};
+			position.top = element.offsetTop;
+			position.left = element.offsetLeft;
+			return position;
+		},
+
+		/*
+		 * Helper method to insert dom siblings
+		 * @param: The element to add after, the element being added
+		 */
+		insertAfter: function(referenceNode, newNode) {
+		    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 		}
-		var sickHolder = '.sick-holder';
-
-		// Event Handelers
-		this
-			.focus(function(){
-				$(this).next(sickHolder).addClass('focus');
-			})
-			.blur(function(){
-				$('.sick-holder').removeClass('focus');
-			})
-			.keydown(function(e){
-				var val= e.keyCode;
-
-				// If keypress is alphanumeric
-				if( !/[^A-Za-z0-9 ]/.test(String.fromCharCode(val)) ){
-					$(this).next('.sick-holder').hide();
-				}
-			})
-			.keyup(function(e){
-				var val = e.keyCode;
-				// If keypress is backspace or delete and value is empty
-				if( $(this).val() == '' && val === 8 ){
-					$(this).next('.sick-holder').show();
-				}
-			})
-			// The loop!
-			.each(function(i){
-				var pos = {};
-				var placeholderText = getPlaceholder( $(this) );
-				var inputID = $(this).attr('id');
-				var $label = $('<label for=' + inputID + '>' + placeholderText + '</label>')
-							 	.addClass('sick-holder');
-				pos = $(this).offset();
-
-				$(this).after($label);
-				$label.css({
-					'position': 'absolute', 
-					'top': pos.top, 
-					'left': pos.left
-				});			
-			});
-	}	
-})(jQuery);
+	}
+	return SickHolder;
+})();
