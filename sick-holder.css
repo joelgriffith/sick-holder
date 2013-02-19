@@ -1,0 +1,8 @@
+.sickholder {
+	color: #333;
+	cursor: text;
+	pointer-events: none;
+}
+.sickholder.focus {
+	color: gray;
+}
