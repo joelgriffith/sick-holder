@@ -1,8 +1,8 @@
-.sickholder {
-	color: #333;
+.sick-holder {
+	color: gray;
 	cursor: text;
 	pointer-events: none;
 }
-.sickholder.focus {
-	color: gray;
+.sick-holder.focus {
+	color: #ccc;
 }

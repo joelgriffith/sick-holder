@@ -5,21 +5,14 @@
 		var getPlaceholder = function(elem){
 			return elem.attr('placeholder');
 		}
-		var sickHolder = 'sick-holder';
+		var sickHolder = '.sick-holder';
 
 		// Event Handelers
 		this
 			.focus(function(){
-				if( !$(this).val() == '' ){
-					return false;
-				}
 				$(this).next(sickHolder).addClass('focus');
 			})
 			.blur(function(){
-				if( !$(this).val() == '' ){
-					return false;
-				}
-				$('.sick-holder').show();
 				$('.sick-holder').removeClass('focus');
 			})
 			.keydown(function(e){
@@ -33,7 +26,7 @@
 			.keyup(function(e){
 				var val = e.keyCode;
 				// If keypress is backspace or delete and value is empty
-				if( $(this).val() == '' && val === 8){
+				if( $(this).val() == '' && val === 8 ){
 					$(this).next('.sick-holder').show();
 				}
 			})
@@ -41,7 +34,8 @@
 			.each(function(i){
 				var pos = {};
 				var placeholderText = getPlaceholder( $(this) );
-				var $label = $('<label>' + placeholderText + '</label>')
+				var inputID = $(this).attr('id');
+				var $label = $('<label for=' + inputID + '>' + placeholderText + '</label>')
 							 	.addClass('sick-holder');
 				pos = $(this).offset();
 
