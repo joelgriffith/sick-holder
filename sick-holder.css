@@ -1,8 +1,9 @@
-.sick-holder {
+label.sick-holder {
 	color: gray;
 	cursor: text;
 	pointer-events: none;
+	position: absolute;
 }
-.sick-holder.focus {
+label.sick-holder.focus {
 	color: #ccc;
 }
