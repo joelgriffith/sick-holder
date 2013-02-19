@@ -1,15 +1,29 @@
 .sick-holder-placeholder {
+	margin: 0;
+	padding: 0;
+	line-height: 1;
+	font-size: 100%;
 	color: gray;
 	cursor: text;
 	pointer-events: none;
 	position: absolute;
 	top: 0;
 	left: 0;
+	transition: color 0.1s linear 0s;
+	-webkit-transition: color 0.1s linear 0s;
+	-moz-transition: color 0.1s linear 0s;
 }
 .sick-holder-placeholder.focus {
 	color: #ccc;
+	transition: color 0.1s linear 0s;
+	-webkit-transition: color 0.1s linear 0s;
+	-moz-transition: color 0.1s linear 0s;
 }
 .sick-holder-container {
+	margin: 0;
+	padding: 0;
 	position: relative;
-	text-transform: none;
+	display: inline-block;
+	*zoom: 1; /* IE7 HAX */
+	*display: inline;
 }
