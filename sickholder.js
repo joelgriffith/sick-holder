@@ -4,10 +4,10 @@ window.app = window.app || {};
 app.sickholder = (function(){
 
 	// Some 'global' functions & variables
-	var padding, inputs, className, fontSize, ie7;
+	var padding, inputs, className, fontSize, position = {};
 
 	// Application Object
-	var SickHolder = {
+	var sickholder = {
 
 		/*
 		 *	Instantiater, handles function calling and config
@@ -20,17 +20,17 @@ app.sickholder = (function(){
 				top : config.paddingTop || 0,
 				left : config.paddingLeft || 0
 			};
-			className = config.className || 'sick-holder';
+			className = config.className || 'sick-holder-placeholder';
 			fontSize = config.fontSize || '';
 
-			// Load inputs, generate placeholders
+			// Get inputs, generate placeholders
 			inputs = this.getElements();
 			this.createPlaceHolder(inputs);
 		},
 
 		/*
 		 * Captures all inputs/textareas by attribute
-		 *
+		 * TODO: Clean this up so it doesn't scan EVERY node
 		 * @return: Array of elements with placeholder attributes
 		 */
 		getElements: function(){
@@ -56,16 +56,18 @@ app.sickholder = (function(){
 			for(var i = 0; i < elems.length; i++){
 				var placeholderText = elems[i].getAttribute('placeholder');
 				var placeholderID = elems[i].getAttribute('id');
-				var location = this.getPlaceholderPosition(elems[i]);
 				var label = document.createElement('label');
+				var container = document.createElement('div');
 				
-				// Generate the labels
+				// Generate the container and labels
+				container.className = 'sick-holder-container';
 				label.innerHTML = placeholderText;
 				label.className = className;
 				label.setAttribute('for', placeholderID);
-				label.style.top = location.top + padding.top + 'px';
-				label.style.left = location.left + padding.left + 'px';
+				label.style.top = padding.top + 'px';
+				label.style.left = padding.left + 'px';
 				label.style.fontSize = fontSize;
+				this.insertInto(elems[i], container);
 				this.insertAfter(elems[i], label);
 
 				// Attach the event handlers
@@ -153,25 +155,23 @@ app.sickholder = (function(){
 		},
 
 		/*
-		 * Method to get element position
-		 * TODO: Currently broke in IE7/8
-		 * @return: Object with element coordination
-		 */
-		getPlaceholderPosition: function(elem){
-			var position = {};
-			position.top = elem.offsetTop;
-			position.left = elem.offsetLeft;
-			return position;
-		},
-
-		/*
 		 * Helper method to insert dom siblings
 		 *
 		 * @param: The element to add after, the element being added
 		 */
 		insertAfter: function(referenceNode, newNode) {
 		    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+		},
+
+		/*
+		 * Helper method to insert dom element into another
+		 *
+		 * @param: The element to insert into, the element being inserted
+		 */
+		insertInto: function(referenceNode, newNode) {
+		    this.insertAfter(referenceNode, newNode);
+		    newNode.appendChild(referenceNode);
 		}
 	}
-	return SickHolder;
+	return sickholder;
 })();

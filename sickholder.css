@@ -1,9 +1,15 @@
-label.sick-holder {
+.sick-holder-placeholder {
 	color: gray;
 	cursor: text;
 	pointer-events: none;
 	position: absolute;
+	top: 0;
+	left: 0;
 }
-label.sick-holder.focus {
+.sick-holder-placeholder.focus {
 	color: #ccc;
+}
+.sick-holder-container {
+	position: relative;
+	text-transform: none;
 }
