@@ -1,4 +1,10 @@
-// Load/Check app global space
+/*
+ * Sick Holder v1.0
+ *
+ * Joel Griffith
+ * mrskitch@gmail.com
+ * @mrskitch
+ */
 window.app = window.app || {};
 
 window.app.sickholder = (function () {
@@ -57,6 +63,7 @@ window.app.sickholder = (function () {
             for (var i = 0; i < elems.length; i++) {
                 var placeholderText = elems[i].getAttribute('placeholder');
                 var placeholderID = elems[i].getAttribute('id');
+                var inputWidth = elems[i].offsetWidth;
                 var placeholder = document.createElement('label');
                 var container = document.createElement('div');
 
@@ -73,6 +80,7 @@ window.app.sickholder = (function () {
                 // Style and position the element
                 placeholder.style.top = padding.top + 'px';
                 placeholder.style.left = padding.left + 'px';
+                placeholder.style.maxWidth = inputWidth - padding.left + 'px';
                 placeholder.style.fontSize = fontSize;
 
                 // Insert our placeholder and inputs into a container

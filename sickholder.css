@@ -9,6 +9,7 @@
 	position: absolute;
 	top: 0;
 	left: 0;
+	overflow: hidden;
 	transition: color 0.1s linear 0s;
 	-webkit-transition: color 0.1s linear 0s;
 	-moz-transition: color 0.1s linear 0s;
