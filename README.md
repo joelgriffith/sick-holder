@@ -4,13 +4,22 @@ Sick holder is a shim to support browser that don't have 'placeholder' capabilit
 ##Requirements
 Modernizr. Without it you WILL get duplicate placeholder text in modern browsers!
 
+##Support
+Clear back to IE7, possibly even 6 but haven't tested.
+
 ##Usage
 Include sickholder.js or jquery.sickholder.js in your HTML as well as the sickholder.css. See index.html for an example.
 
 ###Native JavaScript Usage
-For usage without jQuery, simply initiate the object with this:
+For usage without jQuery, simply initiate the object and pass it the optional configuraton parameters:
 
-    app.SickHolder.init();
+    app.SickHolder.init({
+        paddingTop : 5,                                 // Nudges the sickholder from the top
+        paddingLeft : 5,                                // Nudges the sickholder from the left
+        fontSize : 12,                                  // Adjusts the font size (or set it in the stylesheet)
+        className : 'sick-holder'                       // Change the sickholder label class-name (warning, this will break styling!)
+        containerClassName : 'sick-holder-container'    // Change the sickholder container class name (warning, this will break styling!)
+    });
 
 
 ###jQuery Usage
@@ -18,5 +27,5 @@ For jQuery, attach the .sickholder() method to a jQuery select:
     
     $('input').sickholder();
 
-##The Future
-Updates will be coming soon, and will include more support as well as config options (padding and the like).
+##License
+MIT. Just use it!
