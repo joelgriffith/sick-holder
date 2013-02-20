@@ -5,8 +5,8 @@ window.app.sickholder = (function () {
 
     "use strict";
 
-    // Some 'global' functions & variables
-    var padding, inputs, className, fontSize,
+    // Some 'global' functions, variables, and arrays
+    var padding, className, fontSize, containerClassName, inputs = [],
 
     // Application Object
     sickholder = {
@@ -18,32 +18,31 @@ window.app.sickholder = (function () {
 
             // Load config options or use defaults
             config = config || {};
+            className = config.className || 'sick-holder-placeholder';
+            containerClassName = config.containerClassName || 'sick-holder-container';
+            fontSize = config.fontSize || '';
             padding = {
                 top: config.paddingTop || 0,
                 left: config.paddingLeft || 0
             };
-            className = config.className || 'sick-holder-placeholder';
-            fontSize = config.fontSize || '';
 
-            // Get inputs, generate placeholders
-            inputs = this.getElements();
+            // Get inputs, textareas, and generate placeholders
+            this.getElements('input');
+            this.getElements('textarea');
             this.createPlaceHolder(inputs);
         },
 
         /*
-         * Captures all inputs/textareas by attribute
-         * TODO: Clean this up so it doesn't scan EVERY node
-         * @return: Array of elements with placeholder attributes
+         * Captures inputs on tagname, and adds them input global
+         * if it contains a placeholder attribute.
          */
-        getElements: function () {
-            var matchingElements = [];
-            var allElements = document.getElementsByTagName('*');
-            for (var i = 0; i < allElements.length; i++) {
-                if (allElements[i].getAttribute('placeholder')) {
-                    matchingElements.push(allElements[i]);
+        getElements: function (tag) {
+            var elements = document.getElementsByTagName(tag);
+            for (var i = 0; i < elements.length; i++) {
+                if (elements[i].getAttribute('placeholder')) {
+                    inputs.push(elements[i]);
                 }
             }
-            return matchingElements;
         },
 
         /*
@@ -58,19 +57,27 @@ window.app.sickholder = (function () {
             for (var i = 0; i < elems.length; i++) {
                 var placeholderText = elems[i].getAttribute('placeholder');
                 var placeholderID = elems[i].getAttribute('id');
-                var label = document.createElement('label');
+                var placeholder = document.createElement('label');
                 var container = document.createElement('div');
 
-                // Generate the container and labels
-                container.className = 'sick-holder-container';
-                label.innerHTML = placeholderText;
-                label.className = className;
-                label.setAttribute('for', placeholderID);
-                label.style.top = padding.top + 'px';
-                label.style.left = padding.left + 'px';
-                label.style.fontSize = fontSize;
+                // Generate the container Element with the classname
+                container.className = containerClassName;
+
+                // Generate the placeholder shim
+                placeholder.innerHTML = placeholderText;
+
+                // Set classname and tags
+                placeholder.className = className;
+                placeholder.setAttribute('for', placeholderID);
+
+                // Style and position the element
+                placeholder.style.top = padding.top + 'px';
+                placeholder.style.left = padding.left + 'px';
+                placeholder.style.fontSize = fontSize;
+
+                // Insert our placeholder and inputs into a container
                 this.insertInto(elems[i], container);
-                this.insertAfter(elems[i], label);
+                this.insertAfter(elems[i], placeholder);
 
                 // Attach the event handlers
                 this.keyDownHandler(elems[i]);
