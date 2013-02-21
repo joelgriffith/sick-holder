@@ -32,9 +32,7 @@ window.app.Sickholder = (function () {
             };
 
             // Get inputs, textareas, and generate placeholders
-            this.getElements('input');
-            this.getElements('textarea');
-            this.createSickholder(inputs);
+            this.getElements('input').getElements('textarea').createSickholder(inputs);
         },
 
         /*
@@ -48,6 +46,7 @@ window.app.Sickholder = (function () {
                     inputs.push(elements[i]);
                 }
             }
+            return this;
         },
 
         /*
@@ -85,15 +84,11 @@ window.app.Sickholder = (function () {
                 placeholder.style.maxWidth = inputWidth - padding.left + 'px';
                 placeholder.style.fontSize = fontSize;
 
-                // Insert our placeholder and inputs into a container
-                this.insertInto(elem, container);
-                this.insertAfter(elem, placeholder);
+                // Insert our placeholder and inputs into a generated container
+                this.insertInto(elem, container).insertAfter(elem, placeholder);
 
                 // Attach the event handlers
-                this.keyDownHandler(elem);
-                this.keyUpHandler(elem);
-                this.focusHandler(elem);
-                this.blurHandler(elem);
+                this.keyDownHandler(elem).keyUpHandler(elem).focusHandler(elem).blurHandler(elem);
             }
         },
 
@@ -106,7 +101,7 @@ window.app.Sickholder = (function () {
             this.addEvent(elem, "focus", function(){
                 this.nextSibling.className = className + ' focus';
             });
-            return elem;
+            return this;
         },
 
         /*
@@ -118,7 +113,7 @@ window.app.Sickholder = (function () {
             this.addEvent(elem, "blur", function(){
                 this.nextSibling.className = className;
             });
-            return elem;
+            return this;
         },
 
         /*
@@ -134,7 +129,7 @@ window.app.Sickholder = (function () {
                     elem.nextSibling.style.display = "none";
                 }
             };
-            return elem;
+            return this;
         },
 
         /*
@@ -148,7 +143,7 @@ window.app.Sickholder = (function () {
                     elem.nextSibling.style.display = "block";
                 }
             };
-            return elem;
+            return this;
         },
 
         /*
@@ -158,6 +153,7 @@ window.app.Sickholder = (function () {
          */
         insertAfter: function (referenceNode, newNode) {
             referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+            return this;
         },
 
         /*
@@ -168,6 +164,7 @@ window.app.Sickholder = (function () {
         insertInto: function (referenceNode, newNode) {
             this.insertAfter(referenceNode, newNode);
             newNode.appendChild(referenceNode);
+            return this;
         },
 
         /*
@@ -176,14 +173,17 @@ window.app.Sickholder = (function () {
          * @param: The object, the event, the function callback
          */
         addEvent: function( obj, type, fn ) {
+            // Modern browsers
             if (obj.addEventListener) {
                 obj.addEventListener( type, fn, false );
             
+            // Older IE
             } else if (obj.attachEvent) {
                 obj["e"+type+fn] = fn;
                 obj[type+fn] = function() { obj["e"+type+fn]( window.event ); };
                 obj.attachEvent( "on"+type, obj[type+fn] );
             
+            // Everything else, heaven help us
             }else {
                 obj["on"+type] = obj["e"+type+fn];
             }
