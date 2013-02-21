@@ -1,13 +1,12 @@
 /*
- * Sick Holder v1.0
+ *  Sick Holder v1.0
  *
- * Joel Griffith
- * mrskitch@gmail.com
- * @mrskitch
+ *  Joel Griffith
+ *  mrskitch@gmail.com
+ *  @mrskitch
  */
 window.app = window.app || {};
-
-window.app.sickholder = (function () {
+window.app.Sickholder = (function () {
 
     "use strict";
 
@@ -15,7 +14,7 @@ window.app.sickholder = (function () {
     var padding, className, fontSize, containerClassName, inputs = [],
 
     // Application Object
-    sickholder = {
+    Sickholder = {
 
         /*
          * Instantiater, handles function calling and config
@@ -35,7 +34,7 @@ window.app.sickholder = (function () {
             // Get inputs, textareas, and generate placeholders
             this.getElements('input');
             this.getElements('textarea');
-            this.createPlaceHolder(inputs);
+            this.createSickholder(inputs);
         },
 
         /*
@@ -56,14 +55,17 @@ window.app.sickholder = (function () {
          * and attachs the event handlers
          *
          * TODO: Clean this up a bit, not DRY enough
+         *       Add Method for detecting margin, and adjust
+         *       Break down this function into other, smaller ones.
          *
          * @param: Array of elements needing placeholder text
          */
-        createPlaceHolder: function (elems) {
+        createSickholder: function (elems) {
             for (var i = 0; i < elems.length; i++) {
-                var placeholderText = elems[i].getAttribute('placeholder');
-                var placeholderID = elems[i].getAttribute('id');
-                var inputWidth = elems[i].offsetWidth;
+                var elem = elems[i]; // Easier to read
+                var placeholderText = elem.getAttribute('placeholder');
+                var placeholderID = elem.getAttribute('id');
+                var inputWidth = elem.offsetWidth;
                 var placeholder = document.createElement('label');
                 var container = document.createElement('div');
 
@@ -84,14 +86,14 @@ window.app.sickholder = (function () {
                 placeholder.style.fontSize = fontSize;
 
                 // Insert our placeholder and inputs into a container
-                this.insertInto(elems[i], container);
-                this.insertAfter(elems[i], placeholder);
+                this.insertInto(elem, container);
+                this.insertAfter(elem, placeholder);
 
                 // Attach the event handlers
-                this.keyDownHandler(elems[i]);
-                this.keyUpHandler(elems[i]);
-                this.focusHandler(elems[i]);
-                this.blurHandler(elems[i]);
+                this.keyDownHandler(elem);
+                this.keyUpHandler(elem);
+                this.focusHandler(elem);
+                this.blurHandler(elem);
             }
         },
 
@@ -101,19 +103,9 @@ window.app.sickholder = (function () {
          * @param: Element needing focus
          */
         focusHandler: function (elem) {
-
-            // For modern browsers
-            if (document.addEventListener) {
-                elem.addEventListener("focus", function () {
-                    this.nextSibling.className = className + ' focus';
-                });
-
-                // Legacy browsers
-            } else {
-                elem.attachEvent("focus", function () {
-                    this.nextSibling.className = className + ' focus';
-                });
-            }
+            this.addEvent(elem, "focus", function(){
+                this.nextSibling.className = className + ' focus';
+            });
             return elem;
         },
 
@@ -123,19 +115,9 @@ window.app.sickholder = (function () {
          * @param: Element needing blur handles
          */
         blurHandler: function (elem) {
-
-            // For modern browsers
-            if (document.addEventListener) {
-                elem.addEventListener("blur", function () {
-                    this.nextSibling.className = className;
-                });
-
-                // Legacy browsers
-            } else {
-                elem.attachEvent("blur", function () {
-                    this.nextSibling.className = className;
-                });
-            }
+            this.addEvent(elem, "blur", function(){
+                this.nextSibling.className = className;
+            });
             return elem;
         },
 
@@ -146,9 +128,7 @@ window.app.sickholder = (function () {
          */
         keyDownHandler: function (elem) {
             elem.onkeydown = function (e) {
-                if (e === undefined) {
-                    e = window.event;
-                } // For Legacy browsers
+                e = (e === undefined) ? e = window.event : e; // For Legacy browsers
                 var key = e.keyCode;
                 if (!/[^A-Za-z0-9 ]/.test(String.fromCharCode(key))) {
                     elem.nextSibling.style.display = "none";
@@ -188,7 +168,26 @@ window.app.sickholder = (function () {
         insertInto: function (referenceNode, newNode) {
             this.insertAfter(referenceNode, newNode);
             newNode.appendChild(referenceNode);
+        },
+
+        /*
+         * Helper method for attaching events
+         *
+         * @param: The object, the event, the function callback
+         */
+        addEvent: function( obj, type, fn ) {
+            if (obj.addEventListener) {
+                obj.addEventListener( type, fn, false );
+            
+            } else if (obj.attachEvent) {
+                obj["e"+type+fn] = fn;
+                obj[type+fn] = function() { obj["e"+type+fn]( window.event ); };
+                obj.attachEvent( "on"+type, obj[type+fn] );
+            
+            }else {
+                obj["on"+type] = obj["e"+type+fn];
+            }
         }
     };
-    return sickholder;
+    return Sickholder;
 })();
