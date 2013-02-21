@@ -50,7 +50,7 @@ window.app.Sickholder = (function () {
         },
 
         /*
-         * Creates labels that will act as placeholder shim
+         * Creates sickholders that will act as a placeholder
          * and attachs the event handlers
          *
          * TODO: Add Method for detecting margin, and adjust
@@ -60,29 +60,29 @@ window.app.Sickholder = (function () {
         createSickholder: function (elems) {
             for (var i = 0; i < elems.length; i++) {
                 var elem = elems[i];
-                var placeholderText         = elem.getAttribute('placeholder');
-                var placeholderID           = elem.getAttribute('id');
+                var inputID                 = elem.getAttribute('id');
                 var inputWidth              = elem.offsetWidth;
-                var placeholder             = document.createElement('label');
+                var sickholderText          = elem.getAttribute('placeholder');
+                var sickholder              = document.createElement('label');
                 var container               = document.createElement('div');
 
                 // Generate the container Element with the classname
                 container.className         = containerClassName;
 
-                // Generate the placeholder shim and add attributes
-                placeholder.innerHTML       = placeholderText;
-                placeholder.className       = className;
-                placeholder.setAttribute('for', placeholderID);
+                // Generate the sickholder shim and add attributes
+                sickholder.innerHTML       = sickholderText;
+                sickholder.className       = className;
+                sickholder.setAttribute('for', inputID);
 
                 // Style and position the element
-                placeholder.style.cssText   += 'top:' + nudge.top + 'px;' +
+                sickholder.style.cssText   += 'top:' + nudge.top + 'px;' +
                                                'left:' + nudge.left + 'px;' +
                                                'max-width:' + (inputWidth - nudge.left) + 'px;' +
                                                'font-size:' + fontSize + ';';
 
-                // Insert our placeholder and inputs into a generated container
+                // Insert our sickholder and inputs into a generated container
                 // TODO: This could more than likely be just one method...
-                this.insertInto(elem, container).insertAfter(elem, placeholder);
+                this.insertInto(elem, container).insertAfter(elem, sickholder);
 
                 // Attach the event handlers
                 this.keyDownHandler(elem).keyUpHandler(elem).focusHandler(elem).blurHandler(elem);
