@@ -10,10 +10,10 @@ window.app.Sickholder = (function () {
 
     "use strict";
 
-    // Some 'global' functions, variables, and arrays
+    // Some scoped variables, and arrays
     var padding, className, fontSize, containerClassName, inputs = [],
 
-    // Application Object
+    // The application Object
     Sickholder = {
 
         /*
@@ -22,10 +22,10 @@ window.app.Sickholder = (function () {
         init: function (config) {
 
             // Load config options or use defaults
-            config = config || {};
-            className = config.className || 'sick-holder-placeholder';
-            containerClassName = config.containerClassName || 'sick-holder-container';
-            fontSize = config.fontSize || '';
+            config              = config || {};
+            className           = config.className || 'sick-holder-placeholder';
+            containerClassName  = config.containerClassName || 'sick-holder-container';
+            fontSize            = config.fontSize || '';
             padding = {
                 top: config.paddingTop || 0,
                 left: config.paddingLeft || 0
@@ -36,8 +36,8 @@ window.app.Sickholder = (function () {
         },
 
         /*
-         * Captures inputs on tagname, and adds them input global
-         * if it contains a placeholder attribute.
+         * Captures inputs on tagname, and adds them to the global
+         * input if it contains a placeholder attribute.
          */
         getElements: function (tag) {
             var elements = document.getElementsByTagName(tag);
@@ -53,36 +53,32 @@ window.app.Sickholder = (function () {
          * Creates labels that will act as placeholder shim
          * and attachs the event handlers
          *
-         * TODO: Clean this up a bit, not DRY enough
-         *       Add Method for detecting margin, and adjust
-         *       Break down this function into other, smaller ones.
+         * TODO: Add Method for detecting margin, and adjust
          *
          * @param: Array of elements needing placeholder text
          */
         createSickholder: function (elems) {
             for (var i = 0; i < elems.length; i++) {
-                var elem = elems[i]; // Easier to read
-                var placeholderText = elem.getAttribute('placeholder');
-                var placeholderID = elem.getAttribute('id');
-                var inputWidth = elem.offsetWidth;
-                var placeholder = document.createElement('label');
-                var container = document.createElement('div');
+                var elem = elems[i];
+                var placeholderText         = elem.getAttribute('placeholder');
+                var placeholderID           = elem.getAttribute('id');
+                var inputWidth              = elem.offsetWidth;
+                var placeholder             = document.createElement('label');
+                var container               = document.createElement('div');
 
                 // Generate the container Element with the classname
-                container.className = containerClassName;
+                container.className         = containerClassName;
 
-                // Generate the placeholder shim
-                placeholder.innerHTML = placeholderText;
-
-                // Set classname and tags
-                placeholder.className = className;
+                // Generate the placeholder shim and add attributes
+                placeholder.innerHTML       = placeholderText;
+                placeholder.className       = className;
                 placeholder.setAttribute('for', placeholderID);
 
                 // Style and position the element
-                placeholder.style.top = padding.top + 'px';
-                placeholder.style.left = padding.left + 'px';
-                placeholder.style.maxWidth = inputWidth - padding.left + 'px';
-                placeholder.style.fontSize = fontSize;
+                placeholder.style.cssText   += 'top:' + padding.top + 'px;' +
+                                               'left:' + padding.left + 'px;' +
+                                               'max-width:' + (inputWidth - padding.left) + 'px;' +
+                                               'font-size:' + fontSize + ';';
 
                 // Insert our placeholder and inputs into a generated container
                 this.insertInto(elem, container).insertAfter(elem, placeholder);
@@ -172,7 +168,7 @@ window.app.Sickholder = (function () {
          *
          * @param: The object, the event, the function callback
          */
-        addEvent: function( obj, type, fn ) {
+        addEvent: function(obj, type, fn) {
             // Modern browsers
             if (obj.addEventListener) {
                 obj.addEventListener( type, fn, false );
@@ -183,7 +179,7 @@ window.app.Sickholder = (function () {
                 obj[type+fn] = function() { obj["e"+type+fn]( window.event ); };
                 obj.attachEvent( "on"+type, obj[type+fn] );
             
-            // Everything else, heaven help us
+            // Heaven help us
             }else {
                 obj["on"+type] = obj["e"+type+fn];
             }
