@@ -14,8 +14,8 @@ Include sickholder.js or jquery.sickholder.js in your HTML as well as the sickho
 For usage without jQuery, simply initiate the object and pass it the optional configuraton parameters:
 
     app.SickHolder.init({
-        paddingTop : 5,                                 // Nudges the sickholder from the top
-        paddingLeft : 5,                                // Nudges the sickholder from the left
+        nudgeTop : 5,                                   // Nudges the sickholder from the top
+        nudgeLeft : 5,                                  // Nudges the sickholder from the left
         fontSize : 12,                                  // Adjusts the font size (or set it in the stylesheet)
         className : 'sick-holder'                       // Change the sickholder label class-name (warning, this will break styling!)
         containerClassName : 'sick-holder-container'    // Change the sickholder container class name (warning, this will break styling!)

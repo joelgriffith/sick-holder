@@ -11,7 +11,7 @@ window.app.Sickholder = (function () {
     "use strict";
 
     // Some scoped variables, and arrays
-    var padding, className, fontSize, containerClassName, inputs = [],
+    var nudge, className, fontSize, containerClassName, inputs = [],
 
     // The application Object
     Sickholder = {
@@ -26,9 +26,9 @@ window.app.Sickholder = (function () {
             className           = config.className || 'sick-holder-placeholder';
             containerClassName  = config.containerClassName || 'sick-holder-container';
             fontSize            = config.fontSize || '';
-            padding = {
-                top: config.paddingTop || 0,
-                left: config.paddingLeft || 0
+            nudge = {
+                top: config.nudgeTop || 0,
+                left: config.nudgeLeft || 0
             };
 
             // Get inputs, textareas, and generate placeholders
@@ -75,12 +75,13 @@ window.app.Sickholder = (function () {
                 placeholder.setAttribute('for', placeholderID);
 
                 // Style and position the element
-                placeholder.style.cssText   += 'top:' + padding.top + 'px;' +
-                                               'left:' + padding.left + 'px;' +
-                                               'max-width:' + (inputWidth - padding.left) + 'px;' +
+                placeholder.style.cssText   += 'top:' + nudge.top + 'px;' +
+                                               'left:' + nudge.left + 'px;' +
+                                               'max-width:' + (inputWidth - nudge.left) + 'px;' +
                                                'font-size:' + fontSize + ';';
 
                 // Insert our placeholder and inputs into a generated container
+                // TODO: This could more than likely be just one method...
                 this.insertInto(elem, container).insertAfter(elem, placeholder);
 
                 // Attach the event handlers
@@ -115,6 +116,9 @@ window.app.Sickholder = (function () {
         /*
          * Handles the keydown interaction
          *
+         * TODO: This only handles keyboard input. Need mouse click
+         *       handling as well (pasting)
+         *
          * @param: Array of elements needing keydown handles
          */
         keyDownHandler: function (elem) {
@@ -131,7 +135,10 @@ window.app.Sickholder = (function () {
         /*
          * Handles the keyup interaction
          *
-         * @param: Array of elements needing keyup handles
+         * TODO: This only handles keyboard input. Need mouse click
+         *       as well (cutting).
+         *
+         *  @param: Array of elements needing keyup handles
          */
         keyUpHandler: function (elem) {
             elem.onkeyup = function () {
