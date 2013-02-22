@@ -61,7 +61,7 @@ window.app.Sickholder = (function () {
             for (var i = 0; i < inputs.length; i++) {
                 var input = inputs[i],
                     sickholder              = document.createElement('label'),
-                    container               = document.createElement('div');
+                    container               = document.createElement('aside');
 
                 // Generate the container Element with the classname
                 container.className         = containerClassName;
@@ -75,7 +75,6 @@ window.app.Sickholder = (function () {
                 sickholder.style.cssText   += 'top:' + nudge.top + 'px;' +
                                               'left:' + nudge.left + 'px;' +
                                               'max-width:' + (input.offsetWidth - nudge.left) + 'px;' +
-                                              'max-height:' + (input.offsetHeight - nudge.top) + 'px;' +
                                               'font-size:' + fontSize + ';';
 
                 // Insert our sickholder and inputs into a generated container
