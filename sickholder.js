@@ -11,7 +11,7 @@ window.app.Sickholder = (function () {
     "use strict";
 
     // Some scoped variables, and arrays
-    var nudge, className, fontSize, containerClassName, inputs = [],
+    var nudge, className, containerClassName, fontSize, inputs = [],
 
     // The application Object
     Sickholder = {
@@ -57,35 +57,36 @@ window.app.Sickholder = (function () {
          *
          * @param: Array of elements needing placeholder text
          */
-        createSickholder: function (elems) {
-            for (var i = 0; i < elems.length; i++) {
-                var elem = elems[i];
-                var inputID                 = elem.getAttribute('id');
-                var inputWidth              = elem.offsetWidth;
-                var sickholderText          = elem.getAttribute('placeholder');
-                var sickholder              = document.createElement('label');
-                var container               = document.createElement('div');
+        createSickholder: function (inputs) {
+            for (var i = 0; i < inputs.length; i++) {
+                var input = inputs[i],
+                    sickholder              = document.createElement('label'),
+                    container               = document.createElement('div');
 
                 // Generate the container Element with the classname
                 container.className         = containerClassName;
 
                 // Generate the sickholder shim and add attributes
-                sickholder.innerHTML       = sickholderText;
+                sickholder.innerHTML       = input.getAttribute('placeholder');
                 sickholder.className       = className;
-                sickholder.setAttribute('for', inputID);
+                sickholder.setAttribute('for', input.getAttribute('id'));
 
-                // Style and position the element
+                // Style and position the element, setting boundaries
                 sickholder.style.cssText   += 'top:' + nudge.top + 'px;' +
-                                               'left:' + nudge.left + 'px;' +
-                                               'max-width:' + (inputWidth - nudge.left) + 'px;' +
-                                               'font-size:' + fontSize + ';';
+                                              'left:' + nudge.left + 'px;' +
+                                              'max-width:' + (input.offsetWidth - nudge.left) + 'px;' +
+                                              'max-height:' + (input.offsetHeight - nudge.top) + 'px;' +
+                                              'font-size:' + fontSize + ';';
 
                 // Insert our sickholder and inputs into a generated container
-                // TODO: This could more than likely be just one method...
-                this.insertInto(elem, container).insertAfter(elem, sickholder);
+                this.insertInto(input, container).insertAfter(input, sickholder);
 
                 // Attach the event handlers
-                this.keyDownHandler(elem).keyUpHandler(elem).focusHandler(elem).blurHandler(elem);
+                this.onInputHandler(input)
+                    .keyDownHandler(input)
+                    .focusHandler(input)
+                    .blurHandler(input)
+                    .keyUpHandler(input);
             }
         },
 
@@ -119,7 +120,7 @@ window.app.Sickholder = (function () {
          * TODO: This only handles keyboard input. Need mouse click
          *       handling as well (pasting)
          *
-         * @param: Array of elements needing keydown handles
+         * @param: The element needing keydown handles
          */
         keyDownHandler: function (elem) {
             elem.onkeydown = function (e) {
@@ -138,7 +139,7 @@ window.app.Sickholder = (function () {
          * TODO: This only handles keyboard input. Need mouse click
          *       as well (cutting).
          *
-         *  @param: Array of elements needing keyup handles
+         *  @param: The element needing keyup handles
          */
         keyUpHandler: function (elem) {
             elem.onkeyup = function () {
@@ -146,6 +147,22 @@ window.app.Sickholder = (function () {
                     elem.nextSibling.style.display = "block";
                 }
             };
+            return this;
+        },
+
+        /*
+         * Handles the input interaction
+         *
+         *  @param: The element needing keyup handles
+         */
+        onInputHandler: function(elem){
+            this.addEvent(elem, "input", function(){
+                if (elem.value === ''){
+                    elem.nextSibling.style.display = "block";
+                } else {
+                    elem.nextSibling.style.display = "none";
+                }
+            });
             return this;
         },
 
@@ -173,7 +190,7 @@ window.app.Sickholder = (function () {
         /*
          * Helper method for attaching events
          *
-         * @param: The object, the event, the function callback
+         * @param: The element, the event, the function callback
          */
         addEvent: function(obj, type, fn) {
             // Modern browsers

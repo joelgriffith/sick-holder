@@ -8,6 +8,7 @@
 	top: 0;
 	left: 0;
 	overflow: hidden;
+	line-height: 100%;
 	transition: color 0.1s linear 0s;
 	-webkit-transition: color 0.1s linear 0s;
 	-moz-transition: color 0.1s linear 0s;
@@ -21,6 +22,10 @@
 .sick-holder-container {
 	margin: 0;
 	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
 	position: relative;
 	display: inline-block;
 	*zoom: 1; /* IE7 HAX */
