@@ -8,9 +8,9 @@ Modernizr. Without it you WILL get duplicate placeholder text in modern browsers
 Clear back to IE7, possibly even 6 but haven't tested.
 
 ##Usage
-Include sickholder.js or jquery.sickholder.js in your HTML as well as the sickholder.css. See index.html for an example.
+Include sickholder.js or sickholder.min.js in your HTML as well as the sickholder.css. See index.html for an example.
 
-###Native JavaScript Usage
+###Usage
 For usage without jQuery, simply initiate the object and pass it the optional configuraton parameters:
 
     app.SickHolder.init({
@@ -21,11 +21,8 @@ For usage without jQuery, simply initiate the object and pass it the optional co
         containerClassName : 'sick-holder-container'    // Change the sickholder container class name (warning, this will break styling!)
     });
 
-
-###jQuery Usage
-For jQuery, attach the .sickholder() method to a jQuery select:
-    
-    $('input').sickholder();
+##Future
+I plan on writing a jQuery plugin as well once I'm satisified with the native plugin.
 
 ##License
 MIT. Just use it!
