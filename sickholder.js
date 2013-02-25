@@ -119,6 +119,9 @@ window.app.Sickholder = (function () {
          * Handles the cut interaction (mouse), note to wait 1 millisecond
          * to see if form is empty or has content.
          *
+         * TODO: Fold in the paste handler as well as 'input' since Opera
+         * doesn't support paste/cut.
+         *
          * @param: Element Object
          */
         cutHandler: function(elem) {
