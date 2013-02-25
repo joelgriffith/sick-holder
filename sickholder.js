@@ -32,14 +32,16 @@ window.app.Sickholder = (function () {
             };
 
             // Get inputs, textareas, and generate placeholders
-            this.getElements('input').getElements('textarea').createSickholder(inputs);
+            this.getPlaceholderElements('input')
+                .getPlaceholderElements('textarea')
+                .createSickholder(inputs);
         },
 
         /*
-         * Captures inputs on tagname, and adds them to the global
+         * Captures inputs by tagname, and adds them to the global
          * input if it contains a placeholder attribute.
          */
-        getElements: function (tag) {
+        getPlaceholderElements: function (tag) {
             var elements = document.getElementsByTagName(tag);
             for (var i = 0; i < elements.length; i++) {
                 if (elements[i].getAttribute('placeholder')) {
@@ -81,18 +83,18 @@ window.app.Sickholder = (function () {
                 this.insertInto(input, container).insertAfter(input, sickholder);
 
                 // Attach the event handlers
-                this.onInputHandler(input)
-                    .keyDownHandler(input)
+                this.keyDownHandler(input)
                     .focusHandler(input)
-                    .blurHandler(input)
-                    .keyUpHandler(input);
+                    .cutHandler(input)
+                    .pasteHandler(input)
+                    .blurHandler(input);
             }
         },
 
         /*
          * Handles the focus interaction
          *
-         * @param: Element needing focus
+         * @param: Element Object
          */
         focusHandler: function (elem) {
             this.addEvent(elem, "focus", function(){
@@ -104,7 +106,7 @@ window.app.Sickholder = (function () {
         /*
          * Handles the blur interaction
          *
-         * @param: Element needing blur handles
+         * @param: Element Object
          */
         blurHandler: function (elem) {
             this.addEvent(elem, "blur", function(){
@@ -114,54 +116,59 @@ window.app.Sickholder = (function () {
         },
 
         /*
-         * Handles the keydown interaction
+         * Handles the cut interaction (mouse), note to wait 1 millisecond
+         * to see if form is empty or has content.
          *
-         * TODO: This only handles keyboard input. Need mouse click
-         *       handling as well (pasting)
+         * @param: Element Object
+         */
+        cutHandler: function(elem) {
+            this.addEvent(elem, 'cut', function(){
+                setTimeout(function(){
+                    if( elem.value === '' ){
+                        elem.nextSibling.style.display = 'block';
+                    } else {
+                        elem.nextSibling.style.display = 'none';
+                    }
+                },1);
+            });
+            return this;
+        },
+
+        /*
+         * Handles the paste interaction (mouse), note to wait 1 millisecond
+         * to see if form is empty or has content.
          *
-         * @param: The element needing keydown handles
+         * @param: Element Object
+         */
+        pasteHandler: function(elem) {
+            this.addEvent(elem, 'paste', function(){
+                setTimeout(function(){
+                    if( elem.value === '' ){
+                        elem.nextSibling.style.display = 'block';
+                    } else {
+                        elem.nextSibling.style.display = 'none';
+                    }
+                },1);
+            });
+            return this;
+        },
+
+        /*
+         * Handles the keydown interaction, note to wait 1 millisecond
+         * to see if form is empty or has content.
+         *
+         * @param: Element Object
          */
         keyDownHandler: function (elem) {
-            elem.onkeydown = function (e) {
-                e = (e === undefined) ? e = window.event : e; // For Legacy browsers
-                var key = e.keyCode;
-                if (!/[^A-Za-z0-9 ]/.test(String.fromCharCode(key))) {
-                    elem.nextSibling.style.display = "none";
-                }
+            elem.onkeydown = function () {
+                setTimeout(function(){
+                    if( elem.value === ''){
+                        elem.nextSibling.style.display = 'block';
+                    } else {
+                        elem.nextSibling.style.display = 'none';
+                    }
+                }, 1);
             };
-            return this;
-        },
-
-        /*
-         * Handles the keyup interaction
-         *
-         * TODO: This only handles keyboard input. Need mouse click
-         *       as well (cutting).
-         *
-         *  @param: The element needing keyup handles
-         */
-        keyUpHandler: function (elem) {
-            elem.onkeyup = function () {
-                if (elem.value === '') {
-                    elem.nextSibling.style.display = "block";
-                }
-            };
-            return this;
-        },
-
-        /*
-         * Handles the input interaction
-         *
-         *  @param: The element needing keyup handles
-         */
-        onInputHandler: function(elem){
-            this.addEvent(elem, "input", function(){
-                if (elem.value === ''){
-                    elem.nextSibling.style.display = "block";
-                } else {
-                    elem.nextSibling.style.display = "none";
-                }
-            });
             return this;
         },
 
@@ -188,6 +195,8 @@ window.app.Sickholder = (function () {
 
         /*
          * Helper method for attaching events
+         *
+         * TODO: Add support for passing multiple handelers
          *
          * @param: The element, the event, the function callback
          */
