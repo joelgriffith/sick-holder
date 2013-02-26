@@ -2,6 +2,7 @@
 Sick holder is a shim to support browser that don't have 'placeholder' capabilites. 
 
 Unlike other shims this library doesn't:
+
 1. Add text into the input field (helps in validation).
 2. Doesn't require any additional markup, short of the placeholder attribute needing to be present.
 3. Is stylable and customizable (including positioning and padding) and includes stylesheets.
