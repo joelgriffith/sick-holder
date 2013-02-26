@@ -83,11 +83,9 @@ window.app.Sickholder = (function () {
                 this.insertInto(input, container).insertAfter(input, sickholder);
 
                 // Attach the event handlers
-                this.keyDownHandler(input)
-                    .focusHandler(input)
-                    .cutHandler(input)
-                    .pasteHandler(input)
-                    .blurHandler(input);
+                this.focusHandler(input)
+                    .blurHandler(input)
+                    .inputHandlers(input);
             }
         },
 
@@ -119,13 +117,11 @@ window.app.Sickholder = (function () {
          * Handles the cut interaction (mouse), note to wait 1 millisecond
          * to see if form is empty or has content.
          *
-         * TODO: Fold in the paste handler as well as 'input' since Opera
-         * doesn't support paste/cut.
-         *
          * @param: Element Object
          */
-        cutHandler: function(elem) {
-            this.addEvent(elem, 'cut', function(){
+        inputHandlers: function(elem) {
+            var events = "cut,paste,input,keydown".split(',');
+            this.addEvent(elem, events, function(){
                 setTimeout(function(){
                     if( elem.value === '' ){
                         elem.nextSibling.style.display = 'block';
@@ -134,44 +130,6 @@ window.app.Sickholder = (function () {
                     }
                 },1);
             });
-            return this;
-        },
-
-        /*
-         * Handles the paste interaction (mouse), note to wait 1 millisecond
-         * to see if form is empty or has content.
-         *
-         * @param: Element Object
-         */
-        pasteHandler: function(elem) {
-            this.addEvent(elem, 'paste', function(){
-                setTimeout(function(){
-                    if( elem.value === '' ){
-                        elem.nextSibling.style.display = 'block';
-                    } else {
-                        elem.nextSibling.style.display = 'none';
-                    }
-                },1);
-            });
-            return this;
-        },
-
-        /*
-         * Handles the keydown interaction, note to wait 1 millisecond
-         * to see if form is empty or has content.
-         *
-         * @param: Element Object
-         */
-        keyDownHandler: function (elem) {
-            elem.onkeydown = function () {
-                setTimeout(function(){
-                    if( elem.value === ''){
-                        elem.nextSibling.style.display = 'block';
-                    } else {
-                        elem.nextSibling.style.display = 'none';
-                    }
-                }, 1);
-            };
             return this;
         },
 
@@ -199,25 +157,36 @@ window.app.Sickholder = (function () {
         /*
          * Helper method for attaching events
          *
-         * TODO: Add support for passing multiple handelers
-         *
-         * @param: The element, the event, the function callback
+         * @param: Element object, event string/array, callback
          */
         addEvent: function(obj, type, fn) {
-            // Modern browsers
-            if (obj.addEventListener) {
-                obj.addEventListener( type, fn, false );
-            
-            // Older IE
-            } else if (obj.attachEvent) {
-                obj["e"+type+fn] = fn;
-                obj[type+fn] = function() { obj["e"+type+fn]( window.event ); };
-                obj.attachEvent( "on"+type, obj[type+fn] );
-            
-            // Heaven help us
-            }else {
-                obj["on"+type] = obj["e"+type+fn];
+            // Function to check event attachment and attach
+            var addEvents = function(obj, type, fn) {
+                // Modern browsers
+                if (obj.addEventListener) {
+                    obj.addEventListener( type, fn, false );
+                
+                // Older IE
+                } else if (obj.attachEvent) {
+                    obj["e"+type+fn] = fn;
+                    obj[type+fn] = function() { obj["e"+type+fn]( window.event ); };
+                    obj.attachEvent( "on"+type, obj[type+fn] );
+                
+                // Heaven help us
+                }else {
+                    obj["on"+type] = obj["e"+type+fn];
+                }
+            };
+
+            // Check if array is passed, else use string
+            if( type instanceof Array ){
+                for (var i = 0; i < type.length; i++){
+                    addEvents(obj, type[i], fn);
+                }
+            } else {
+                addEvents(obj, type, fn);
             }
+            return this;
         }
     };
     return Sickholder;
