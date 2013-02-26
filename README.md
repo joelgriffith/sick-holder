@@ -1,16 +1,16 @@
 #Sick Holder!
 Sick holder is a shim to support browser that don't have 'placeholder' capabilites. 
 
-Unlike other shims this library doesn't:
+Unlike other shims this library:
 
-1. Add text into the input field (helps in validation).
+1. Doesn't add text into the input field (helps in validation).
 2. Doesn't require any additional markup, short of the placeholder attribute needing to be present.
 3. Is stylable and customizable (including positioning and padding) and includes stylesheets.
 4. Reacts like native placeholder fields (inserting values hide the placeholder, focus and blur handling as well).
-5. Doesn't require any library to function, though modernizr is needed to prevent it from appearing in browsers that support placeholder.
+5. Doesn't require any library to function, 100% standalone.
 
 ##Requirements
-Modernizr. Without it you WILL get duplicate placeholder text in modern browsers!
+Nothing, no longer needs support from modernizr as it does it's own feature detection.
 
 ##Support
 Clear back to IE7, possibly even 6 but haven't tested. Most major vendors are supported.

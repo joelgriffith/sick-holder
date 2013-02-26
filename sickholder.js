@@ -20,6 +20,9 @@ window.sickholder = (function () {
          */
         init: function (config) {
 
+            // Check if placeholder is already supported
+            if ( "placeholder" in document.createElement("input") ) { return true; }
+
             // Load config options or use defaults
             config              = config || {};
             className           = config.className || 'sick-holder-placeholder';
