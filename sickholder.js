@@ -5,8 +5,7 @@
  *  mrskitch@gmail.com
  *  @mrskitch
  */
-window.app = window.app || {};
-window.app.Sickholder = (function () {
+window.sickholder = (function () {
 
     "use strict";
 
@@ -63,24 +62,26 @@ window.app.Sickholder = (function () {
             for (var i = 0; i < inputs.length; i++) {
                 var input = inputs[i],
                     sickholder              = document.createElement('label'),
-                    container               = document.createElement('aside');
+                    container               = document.createElement('aside'),
+                    marginLeft              = this.getMargins(input, 'margin-left'),
+                    marginTop               = this.getMargins(input, 'margin-top');
 
                 // Generate the container Element with the classname
                 container.className         = containerClassName;
 
-                // Generate the sickholder shim and add attributes
-                sickholder.innerHTML       = input.getAttribute('placeholder');
-                sickholder.className       = className;
+                // Generate the sickholder shim, add attributes, and style
                 sickholder.setAttribute('for', input.getAttribute('id'));
-
-                // Style and position the element, setting boundaries
-                sickholder.style.cssText   += 'top:' + nudge.top + 'px;' +
-                                              'left:' + nudge.left + 'px;' +
+                sickholder.setAttribute('data-placeholder', 'sick-holder');
+                sickholder.className       = className;
+                sickholder.innerHTML       = input.getAttribute('placeholder');
+                sickholder.style.cssText   += 'top:' + (nudge.top + marginTop) + 'px;' +
+                                              'left:' + (nudge.left + marginLeft) + 'px;' +
                                               'max-width:' + (input.offsetWidth - nudge.left) + 'px;' +
                                               'font-size:' + fontSize + ';';
 
                 // Insert our sickholder and inputs into a generated container
-                this.insertInto(input, container).insertAfter(input, sickholder);
+                this.insertInto(input, container)
+                    .insertAfter(input, sickholder);
 
                 // Attach the event handlers
                 this.focusHandler(input)
@@ -155,6 +156,21 @@ window.app.Sickholder = (function () {
         },
 
         /*
+         * Helper method to get element css styles
+         *
+         * @param: Element Object, Style attribute
+         */
+        getMargins: function (elem,styleProp) {
+            var style;
+            if (elem.currentStyle) {
+                style = elem.currentStyle[styleProp];
+            } else if (window.getComputedStyle) {
+                style = document.defaultView.getComputedStyle(elem,null).getPropertyValue(styleProp);
+            }
+            return parseInt(style, 10);
+        },
+
+        /*
          * Helper method for attaching events
          *
          * @param: Element object, event string/array, callback
@@ -178,7 +194,7 @@ window.app.Sickholder = (function () {
                 }
             };
 
-            // Check if array is passed, else use string
+            // Check if array is passed, else assume string
             if( type instanceof Array ){
                 for (var i = 0; i < type.length; i++){
                     addEvents(obj, type[i], fn);

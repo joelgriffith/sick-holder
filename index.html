@@ -8,6 +8,7 @@
 <style>
 	* {
 		font-family: arial;
+		box-sizing: border-box;
 	}
 	.container {
 		width: 960px;
@@ -17,6 +18,8 @@
 		display: block;
 	}
 	input, textarea {
+		margin-top: 10px;
+		margin-left: 10px;
 		margin-bottom: 10px;		
 	}
 </style>
@@ -31,7 +34,7 @@
 	</div>
 	<script src="sickholder.js" type="text/javascript"></script>
 	<script type="text/javascript">
-		app.Sickholder.init({ 
+		sickholder.init({ 
 			nudgeTop : 3, 
 			nudgeLeft : 5,
 			fontSize : '14px'

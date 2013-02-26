@@ -13,24 +13,18 @@ Unlike other shims this library doesn't:
 Modernizr. Without it you WILL get duplicate placeholder text in modern browsers!
 
 ##Support
-Clear back to IE7, possibly even 6 but haven't tested. All other vendors are supported.
+Clear back to IE7, possibly even 6 but haven't tested. Most major vendors are supported.
 
 ##Usage
-Include sickholder.js or sickholder.min.js in your HTML as well as the sickholder.css. See index.html for an example.
+Include sickholder.js and sickholder.css in your site, and add this script to your DOM ready file (parameters are optional):
 
-###Usage
-Include this script in your DOM ready file (parameters are optional):
-
-    app.SickHolder.init({
+    sickHolder.init({
         nudgeTop : 5,                                   // Nudges the sickholder from the top
         nudgeLeft : 5,                                  // Nudges the sickholder from the left
         fontSize : 12,                                  // Adjusts the font size (or set it in the stylesheet)
         className : 'sick-holder'                       // Change the sickholder label class-name (warning, this will break styling!)
         containerClassName : 'sick-holder-container'    // Change the sickholder container class name (warning, this will break styling!)
     });
-
-##Future
-I plan on writing a jQuery plugin as well once I'm satisified with the native plugin.
 
 ##License
 MIT. Just use it!
