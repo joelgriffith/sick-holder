@@ -57,17 +57,15 @@ window.sickholder = (function () {
          * Creates sickholders that will act as a placeholder
          * and attachs the event handlers
          *
-         * TODO: Add Method for detecting margin, and adjust
-         *
          * @param: Array of elements needing placeholder text
          */
         createSickholder: function (inputs) {
             for (var i = 0; i < inputs.length; i++) {
                 var input = inputs[i],
                     sickholder              = document.createElement('label'),
-                    container               = document.createElement('aside'),
-                    marginLeft              = this.getMargins(input, 'margin-left'),
-                    marginTop               = this.getMargins(input, 'margin-top');
+                    container               = document.createElement('div'),
+                    marginLeft              = this.getMargins(input, 'margin-left') || 0,
+                    marginTop               = this.getMargins(input, 'margin-top') || 0;
 
                 // Generate the container Element with the classname
                 container.className         = containerClassName;
