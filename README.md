@@ -26,5 +26,8 @@ Include sickholder.js and sickholder.css in your site, and add this script to yo
         containerClassName : 'sick-holder-container'    // Change the sickholder container class name (warning, this will break styling!)
     });
 
+##Known Issues
+If inputs or textareas have margin metrics other than pixels, sickholders won't be placed properly. Since the nudging properties can be adjusted (and use pixels), only pixels shall be supported.
+
 ##License
 MIT. Just use it!
