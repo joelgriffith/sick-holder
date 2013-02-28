@@ -8,6 +8,7 @@
 <style>
 	* {
 		font-family: arial;
+		box-sizing: border-box;
 	}
 	.container {
 		width: 300px;
@@ -17,10 +18,9 @@
 		display: block;
 	}
 	input, textarea {
-		width: 100%;
 		margin: 50px;
 		padding: 10px;
-		font-size: 14px;		
+		font-size: 14px;
 	}
 	#message {
 		background-color: orange;
@@ -31,7 +31,6 @@
 <body>
 	<div class="container">
 		<h1>Sick-Holder Demo</h1>
-		<div id="message"></div>
 		<label for="name">Name</label>
 		<input id="name" name="name" type="text" placeholder="Jim">
 		<label for="email">Email</label>

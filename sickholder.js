@@ -57,28 +57,44 @@ window.sickholder = (function () {
          * Creates sickholders that will act as a placeholder
          * and attachs the event handlers
          *
+         * This works by retrieving the input, getting its positioning
+         * (margin, position, and top/left/right...), wrapping that in another element, applying
+         * the positioning to the container, and inserting the sickholder into the
+         * same container but positioned over the input.
+         *
          * @param: Array of elements needing placeholder text
          */
         createSickholder: function (inputs) {
             for (var i = 0; i < inputs.length; i++) {
                 var input = inputs[i],
+                    position = (this.getStyle(input, 'position') === 'absolute') ? 'absolute' : 'relative',
                     sickholder              = document.createElement('label'),
-                    container               = document.createElement('div'),
-                    marginLeft              = this.getMargins(input, 'margin-left') || 0,
-                    marginTop               = this.getMargins(input, 'margin-top') || 0;
+                    container               = document.createElement('div');
 
-                // Generate the container Element with the classname
+                // Generate the container Element with the classname and proper metrics
                 container.className         = containerClassName;
+                container.style.cssText     += 'margin:' + this.getStyle(input, 'margin') + ';' +
+                                               'position:' + position + ';' +
+                                               'float:' + this.getStyle(input, 'float') + ';' +
+                                               'width:' + input.offsetWidth + 'px;' +
+                                               'height:' + input.offsetHeight +  'px;' +
+                                               'top:' + this.getStyle(input, 'top') + ';' +
+                                               'left:' + this.getStyle(input, 'left') + ';' +
+                                               'right:' + this.getStyle(input, 'right') + ';' +
+                                               'bottom:' + this.getStyle(input, 'bottom') + ';';
 
                 // Generate the sickholder shim, add attributes, and style
                 sickholder.setAttribute('for', input.getAttribute('id'));
                 sickholder.setAttribute('data-placeholder', 'sick-holder');
                 sickholder.className       = className;
                 sickholder.innerHTML       = input.getAttribute('placeholder');
-                sickholder.style.cssText   += 'top:' + (nudge.top + marginTop) + 'px;' +
-                                              'left:' + (nudge.left + marginLeft) + 'px;' +
+                sickholder.style.cssText   += 'top:' + nudge.top + 'px;' +
+                                              'left:' + nudge.left  + 'px;' +
                                               'max-width:' + (input.offsetWidth - nudge.left) + 'px;' +
                                               'font-size:' + fontSize + ';';
+
+                // Remove any positioning from the input since the container now has them
+                input.style.cssText = "margin:0; float: none; position: static;";
 
                 // Insert our sickholder and inputs into a generated container
                 this.insertInto(input, container)
@@ -161,14 +177,14 @@ window.sickholder = (function () {
          *
          * @param: Element Object, Style attribute
          */
-        getMargins: function (elem,styleProp) {
+        getStyle: function (elem,styleProp) {
             var style;
             if (elem.currentStyle) {
                 style = elem.currentStyle[styleProp];
             } else if (window.getComputedStyle) {
                 style = document.defaultView.getComputedStyle(elem,null).getPropertyValue(styleProp);
             }
-            return parseInt(style, 10);
+            return style;
         },
 
         /*
