@@ -9,8 +9,11 @@ Unlike other shims this library:
 4. Reacts like native placeholder fields (inserting values hide the placeholder, focus and blur handling as well).
 5. Doesn't require any library to function, 100% standalone.
 
+##Demo
+[Click here to see a demo](http://demos.joelgriffith.net/sickholder.html "Sickholder Demo")
+
 ##Requirements
-Nothing, no longer needs support from modernizr as it does it's own feature detection.
+None! Sickholder does it's own feature detection and doesn't need jQuery!
 
 ##Support
 Clear back to IE7, possibly even 6 but haven't tested. Most major vendors are supported.
@@ -26,8 +29,16 @@ Include sickholder.js and sickholder.css in your site, and add this script to yo
         containerClassName : 'sick-holder-container'    // Change the sickholder container class name (warning, this will break styling!)
     });
 
+##How it works
+Instead of inserting text into an input that acts as a placeholder (which is awful when doing any sort of validating or sanitizing), sickholder works by wrapping the input in an element (a div for now) and positioning a label over the input absolutely. The container element then 'steals' the positioning attributes of the input. That way all your input position styles still work, and the sickholder gets put where it needs to without much fuss. You can always use the nudge properties if it doesn't get placed exactly where you want it.
+
+Since sickholders are label elements (with 'for' attributes), clicking on them will automatically select the input box. This helps maintain the standard interaction of clicking on an input and having it get selected. 
+
 ##Known Issues
-If inputs or textareas have margin metrics other than pixels, sickholders won't be placed properly. Since the nudging properties can be adjusted (and use pixels), only pixels shall be supported.
+Currently, when sickholders are clicked on in IE7 their inputs don't focus. This will be worked out soon.
+
+##Upcoming
+A method to redraw the sickholders since they don't auto-update.
 
 ##License
 MIT. Just use it!
