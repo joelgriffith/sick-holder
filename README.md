@@ -16,7 +16,7 @@ Unlike other shims this library:
 None! Sickholder does it's own feature detection and doesn't need jQuery!
 
 ##Support
-Clear back to IE7, possibly even 6 but haven't tested. Most major vendors are supported.
+Works clear back to IE5, and is regularly tested in IE7. If you have issues in another browser, let me know.
 
 ##Usage
 Include sickholder.js and sickholder.css in your site, and add this script to your DOM ready file (parameters are optional):
@@ -36,6 +36,7 @@ Since sickholders are label elements (with 'for' attributes), clicking on them w
 
 ##Known Issues
 Currently, when sickholders are clicked on in IE7 their inputs don't focus. This will be worked out soon.
+If sickholders are appearing above inputs, you NEED to include the sick-holder stylesheet since it DOES do some important layout operations.
 
 ##Upcoming
 A method to redraw the sickholders since they don't auto-update.
