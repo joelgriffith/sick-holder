@@ -10,7 +10,7 @@ Unlike other shims this library:
 5. Doesn't require any library to function, 100% standalone.
 
 ##Demo
-[Click here to see a demo](http://demos.joelgriffith.net/sickholder.html "Sickholder Demo")
+[Click here to see a demo](https://github.com/joelgriffith/sick-holder.git "Sickholder Demo")
 
 ##Requirements
 None! Sickholder does it's own feature detection and doesn't need jQuery!
